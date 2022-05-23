@@ -31,6 +31,10 @@
 
         public DbSet<ChessGamePlayer> ChessGamePlayers { get; set; }
 
+        public DbSet<ChessGameAnalyzeResult> ChessGameAnalyzeResults { get; set; }
+
+        public DbSet<ChessGameAnalyzeQualityResult> ChessGameAnalyzeQualityResults { get; set; }
+
         public override int SaveChanges() => this.SaveChanges(true);
 
         public override int SaveChanges(bool acceptAllChangesOnSuccess)
