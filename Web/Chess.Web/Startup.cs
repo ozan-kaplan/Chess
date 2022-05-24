@@ -83,8 +83,8 @@
             services.AddTransient<IUtilityService, UtilityService>();
             services.AddSingleton<INotificationService, NotificationService>();
 
-             
 
+            services.AddAntiforgery(o => o.HeaderName = "XSRF-TOKEN");
 
         }
 
