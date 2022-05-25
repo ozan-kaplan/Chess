@@ -45,37 +45,38 @@ namespace Chess.Web.Controllers
                 int skip = start != null ? Convert.ToInt32(start) : 0;
                 int recordsTotal = 0;
 
-               
+
                 using var scope = this.serviceProvider.CreateScope();
                 var dbContext = scope.ServiceProvider.GetRequiredService<ChessDbContext>();
 
-                 
- 
+
+
                 var userGameIdList = dbContext.ChessGamePlayers.Where(c => c.UserId == userId).Select(c => c.GameId).AsEnumerable();
 
 
-                 
-                var chessGamePlayersQuery = from player in dbContext.ChessGamePlayers.AsEnumerable() 
-                                where userGameIdList.Contains(player.GameId)
-                                group player by player.GameId into playerGroup
-                                orderby playerGroup.Key descending
-                                select new
-                                {
-                                    Key = playerGroup.Key,
-                                    Players = playerGroup.AsEnumerable(),
-                                };
+
+                var chessGamePlayersQuery = from player in dbContext.ChessGamePlayers.AsEnumerable()
+                                            where userGameIdList.Contains(player.GameId)
+                                            group player by player.GameId into playerGroup
+                                            orderby playerGroup.Key descending
+                                            select new
+                                            {
+                                                Key = playerGroup.Key,
+                                                Players = playerGroup.AsEnumerable(),
+                                            };
 
 
                 var chessGameQuery = (from game in dbContext.ChessGames.AsEnumerable()
                                       join chessGamePlayers in chessGamePlayersQuery on game.Id equals chessGamePlayers.Key
-                                      select new   {
+                                      select new
+                                      {
                                           Game = game,
                                           Players = chessGamePlayers.Players
                                       });
 
 
-                 
-                 
+
+
 
 
                 IEnumerable<GameHistoryViewModel> finalQuery = chessGameQuery.Select(c => new GameHistoryViewModel()
@@ -90,7 +91,7 @@ namespace Chess.Web.Controllers
                     YourScore = c.Players.FirstOrDefault(c => c.UserId == userId).Score,
                     OpponentNickName = c.Players.FirstOrDefault(c => c.UserId != userId).NickName,
                     OpponentColor = c.Players.FirstOrDefault(c => c.UserId != userId).Color,
-                    OpponentScore = c.Players.FirstOrDefault(c => c.UserId != userId).Score, 
+                    OpponentScore = c.Players.FirstOrDefault(c => c.UserId != userId).Score,
                 });
 
 
@@ -142,6 +143,74 @@ namespace Chess.Web.Controllers
             {
                 throw;
             }
+        }
+
+
+        public IActionResult Detail(string gameId)
+        {
+            GameAnalyzeResultViewModel model = new GameAnalyzeResultViewModel();
+
+            try
+            {
+                var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+
+                using var scope = this.serviceProvider.CreateScope();
+                var dbContext = scope.ServiceProvider.GetRequiredService<ChessDbContext>();
+
+                var player = dbContext.ChessGamePlayers.AsEnumerable().FirstOrDefault(p => p.GameId == gameId && p.UserId != userId ;
+                var opponentPlayer = dbContext.ChessGamePlayers.AsEnumerable().FirstOrDefault(p => p.GameId == gameId && p.UserId != userId ;
+
+
+
+                model.GameItem = new GameHistoryViewModel()
+                {
+
+                    YourNickName = player.NickName,
+                    YourColor = player.Color,
+                    YourScore = player.Score,
+                    OpponentColor = opponentPlayer.Color,
+                    OpponentNickName = opponentPlayer.NickName,
+                    OpponentScore = opponentPlayer.Score,
+
+
+                };
+
+                model.GameQualityItem = dbContext.ChessGameAnalyzeQualityResults.AsEnumerable().Where(c => c.GameId == gameId)
+
+                   .Select(c => new GameQuality()
+                   { 
+
+                       BlackBlunderCount  = c.BlackBlunderCount,
+                       BlackInaccuraciesCount = c.BlackInaccuraciesCount,
+                       BlackMistakeCount = c.BlackMistakeCount,
+                       QualityOfBlackPlayer = c.QualityOfBlackPlayer,
+                       QualityOfWhitePlayer = c.QualityOfWhitePlayer,
+                       WhiteBlunderCount = c.WhiteBlunderCount,
+                       WhiteInaccuraciesCount = c.WhiteInaccuraciesCount,
+                       WhiteMistakeCount = c.WhiteMistakeCount,  
+
+                   }).FirstOrDefault();
+
+
+                model.GameAnalyzeList = dbContext.ChessGameAnalyzeResults.AsEnumerable().Where(c => c.GameId == gameId && c.UserId == userId)
+
+                      .Select(c => new GameAnalyze()
+                      {
+                          GameMoveNumber = c.GameMoveNo,
+                          SuggestedMove = c.SuggestedMove,
+                          Type = c.Type,
+                          YourMove = c.Move,
+                      }).ToList();
+
+
+            }
+            catch (Exception ex)
+            {
+
+
+            }
+            return this.View(model);
         }
     }
 }

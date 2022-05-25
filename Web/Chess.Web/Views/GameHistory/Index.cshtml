@@ -76,7 +76,7 @@
                     { "data": "opponentScore", "name": "OpponentScore", "autoWidth": true },
                     { "data": "gameStatusText", "name": "GameStatusText", "autoWidth": true },
                     {
-                        "render": function (data, row) { return "<a href='#' class='btn btn-sm btn-danger' onclick=DeleteCustomer('" + row.id + "'); ><i class='fa fa-search'></i> Detail</a>"; }
+                        "render": function (data, row) { return "<a href='/GameHistory/Detail?gameId='" + row.id + "'' class='btn btn-sm btn-danger'  ><i class='fa fa-search'></i> Detail</a>"; }
                     },
                 ]
             });

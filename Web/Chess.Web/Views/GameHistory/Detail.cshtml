@@ -1,0 +1,111 @@
+﻿ 
+
+@{
+    this.ViewData["Title"] = "Game History";
+}
+
+@model GameAnalyzeResultViewModel
+
+<link href="~/lib/datatables/css/dataTables.bootstrap4.css" rel="stylesheet" />
+
+@Html.AntiForgeryToken()
+
+<div class="row" style="margin-top: 25px; background: white; padding: 10px;">
+
+    <div class="col-12" style="margin-bottom:10px">
+        <section class="about-container">
+            <table id="gameDatatable" class="table table-striped table-bordered" style="width:100%">
+                <thead>
+                    <tr>
+                        <th>Your Nick Name</th>
+                        <th>Opponent Nick Name</th>
+                        <th>Your Color</th>
+                        <th>Opponent Color</th>
+                        <th>Your Score</th>
+                        <th>Opponent Score</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    @if (Model != null && Model.GameItem != null)
+                    {
+                         
+
+                    <tr>
+                        <td>
+                            @Model.GameItem.YourNickName
+                        </td>
+                        <td>
+                            @Model.GameItem.OpponentNickName
+                        </td>
+                        <td>
+                            @Model.GameItem.YourColor
+                        </td>
+                        <td>
+                            @Model.GameItem.OpponentColor
+                        </td>
+
+                        <td>
+                            @Model.GameItem.YourScore
+                        </td>
+                        <td>
+                            @Model.GameItem.OpponentScore
+                        </td>
+
+                    </tr>
+
+ 
+                    }
+                </tbody>
+            </table>
+        </section>
+    </div>
+
+
+    <div class="col-12">
+        <section class="about-container">
+            <table id="gameDetailDatatable" class="table table-striped table-bordered" style="width:100%">
+                <thead>
+                    <tr>
+                        <th>Game Move Number</th>
+                        <th>Color</th>
+                        <th>Your Move</th>
+                        <th>Type</th>
+                        <th>Suggested Move</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    @if (Model != null && Model.GameAnalyzeList.Any())
+                    {
+                        foreach (var row in Model.GameAnalyzeList)
+                        {
+
+                            <tr>
+                                <td>
+                                    @row.GameMoveNumber
+                                </td>
+                                <td>
+                                    @row.Color
+                                </td>
+                                <td>
+                                    @row.Type
+                                </td>
+                                <td>
+                                    @row.SuggestedMove
+                                </td>
+
+                            </tr>
+
+
+                        }
+                    }
+                </tbody>
+            </table>
+        </section>
+    </div>
+
+
+</div>
+
+ 
