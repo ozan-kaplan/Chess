@@ -63,7 +63,7 @@
                 },
                 {
                     "targets": [2, 3, 4, 5, 6, 7, 8, 9],
-                    "orderable": false, 
+                    "orderable": false,
                 }],
                 "columns": [
                     { "data": "id", "name": "Id" },
@@ -75,9 +75,20 @@
                     { "data": "yourScore", "name": "YourScore", "autoWidth": true },
                     { "data": "opponentScore", "name": "OpponentScore", "autoWidth": true },
                     { "data": "gameStatusText", "name": "GameStatusText", "autoWidth": true },
+
                     {
-                        "render": function (data, row) { return "<a href='/GameHistory/Detail?gameId='" + row.id + "'' class='btn btn-sm btn-danger'  ><i class='fa fa-search'></i> Detail</a>"; }
-                    },
+                        mRender: function (data, type, row) {
+                            return "<a href='/GameHistory/Detail?gameId=" + row.id + "' class='btn btn-sm btn-danger'  ><i class='fa fa-search'></i> Detail</a>";
+                        }
+                    }
+
+
+
+
+
+
+
+
                 ]
             });
 

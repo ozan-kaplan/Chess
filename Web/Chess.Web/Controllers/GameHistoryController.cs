@@ -158,8 +158,8 @@ namespace Chess.Web.Controllers
                 using var scope = this.serviceProvider.CreateScope();
                 var dbContext = scope.ServiceProvider.GetRequiredService<ChessDbContext>();
 
-                var player = dbContext.ChessGamePlayers.AsEnumerable().FirstOrDefault(p => p.GameId == gameId && p.UserId != userId ;
-                var opponentPlayer = dbContext.ChessGamePlayers.AsEnumerable().FirstOrDefault(p => p.GameId == gameId && p.UserId != userId ;
+                var player = dbContext.ChessGamePlayers.AsEnumerable().FirstOrDefault(p => p.GameId == gameId && p.UserId == userId) ;
+                var opponentPlayer = dbContext.ChessGamePlayers.AsEnumerable().FirstOrDefault(p => p.GameId == gameId && p.UserId != userId );
 
 
 
