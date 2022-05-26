@@ -13,6 +13,7 @@ namespace Chess.Web.ViewModels
             GameItem = new GameHistoryViewModel();
             GameAnalyzeList = new List<GameAnalyze>();
             GameQualityItem = new GameQuality();
+            GameMoveList = new List<MoveViewModel>();
         }
         public GameHistoryViewModel GameItem { get; set; }
 
@@ -20,11 +21,20 @@ namespace Chess.Web.ViewModels
 
         public GameQuality GameQualityItem { get; set; }
 
-        
+        public List<MoveViewModel> GameMoveList { get; set; }
+
     }
 
 
-  
+    public class MoveViewModel
+    {
+        public int MoveNo { get; set; }
+
+        public string Color { get; set; } 
+      
+        public string Move { get; set; } 
+
+    }
 
     public class GameAnalyze
     {

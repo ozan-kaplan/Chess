@@ -193,12 +193,21 @@ namespace Chess.Web.Controllers
                    }).FirstOrDefault();
 
 
-                model.GameAnalyzeList = dbContext.ChessGameAnalyzeResults.AsEnumerable().Where(c => c.GameId == gameId && c.UserId == userId)
+
+                model.GameMoveList = dbContext.ChessGameMoves.OrderBy(g => g.MoveNo).Where(g => g.GameId == gameId).ToList().Select(c => new MoveViewModel()
+                { 
+                     Move = c.Move,
+                     MoveNo = c.MoveNo,
+                     Color = c.UserId == player.UserId ? player.Color : opponentPlayer.Color,  
+                }).ToList(); 
+
+
+                model.GameAnalyzeList = dbContext.ChessGameAnalyzeResults.AsEnumerable().OrderBy(g => g.GameMoveNo).Where(c => c.GameId == gameId && c.UserId == userId)
 
                       .Select(c => new GameAnalyze()
                       {
                           GameMoveNumber = c.GameMoveNo,
-                          SuggestedMove = c.SuggestedMove,
+                          SuggestedMove = c.SuggestedMove, 
                           Type = c.Type,
                           YourMove = c.Move,
                       }).ToList();

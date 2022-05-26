@@ -1,13 +1,10 @@
-﻿
-
-@{
+﻿@{
     this.ViewData["Title"] = "Game History";
 }
 
 @model GameAnalyzeResultViewModel
 <style>
-    body{
-
+    body {
     }
 </style>
 <link href="~/lib/datatables/css/dataTables.bootstrap4.css" rel="stylesheet" />
@@ -16,7 +13,7 @@
 
 <div class="row" style="margin-top: 25px; background: white; padding: 10px;">
 
-    <div class="col-12" style="margin-bottom:10px">
+    <div class="col-6">
         <h4> Game Informations </h4>
         <table id="gameDatatable" class="table table-striped table-bordered" style="width:100%">
             <thead>
@@ -60,15 +57,15 @@
 
     </div>
 
-    <div class="col-12">
+    <div class="col-6">
 
         <h4> Game Quality Results </h4>
         <table id="gameQualityDatatable" class="table table-striped table-bordered" style="width:100%">
 
             <thead>
                 <tr>
-                    <th colspan="2" class="text-uppercase">Your Information</th>
-                    <th colspan="2" class="text-uppercase">Opponent Information</th>
+                    <th colspan="2" class="text-uppercase">Black Information</th>
+                    <th colspan="2" class="text-uppercase">White Information</th>
                 </tr>
             </thead>
             <tbody>
@@ -98,7 +95,7 @@
                             @Model.GameQualityItem.BlackBlunderCount
                         </td>
                         <td class="font-weight-bold text-uppercase">
-                            Quality:
+                            Blunder Count:
                         </td>
                         <td>
                             @Model.GameQualityItem.WhiteBlunderCount
@@ -143,15 +140,53 @@
 
     </div>
 
+    <div class="col-6">
+        <h4> All Game Moves </h4>
+        <table id="gameMovesTable" class="table table-striped table-bordered" style="width:100%">
+            <thead>
+                <tr>
+                    <th>Move Number</th>
+                    <th>Color</th>
+                    <th>Move</th>
+                </tr>
+            </thead>
+            <tbody>
 
-    <div class="col-12">
+                @if (Model != null && Model.GameMoveList.Any())
+                {
+                    foreach (var row in Model.GameMoveList)
+                    {
+
+                        <tr>
+                            <td>
+                                @row.MoveNo
+                            </td>
+                            <td>
+                                @row.Color
+                            </td>
+                            <td>
+                                @row.Move
+                            </td> 
+
+                        </tr>
+
+
+                    }
+                }
+                else
+                {
+                    <tr><td colspan="5"> No analyze data is available! </td></tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <div class="col-6">
 
         <h4> Game Analyze Results </h4>
         <table id="gameDetailDatatable" class="table table-striped table-bordered" style="width:100%">
             <thead>
                 <tr>
                     <th>Game Move Number</th>
-                    <th>Color</th>
                     <th>Your Move</th>
                     <th>Type</th>
                     <th>Suggested Move</th>
@@ -169,7 +204,7 @@
                                 @row.GameMoveNumber
                             </td>
                             <td>
-                                @row.Color
+                                @row.YourMove
                             </td>
                             <td>
                                 @row.Type
