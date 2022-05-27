@@ -117,15 +117,7 @@ namespace Chess.Web.Controllers
                             break;
                     }
                 }
-
-
-
-
-                //var customerData = (from tempcustomer in context.Customers select tempcustomer);
-                //if (!(string.IsNullOrEmpty(sortColumn) && string.IsNullOrEmpty(sortColumnDirection)))
-                //{
-                //    customerData = customerData.OrderBy(sortColumn + " " + sortColumnDirection);
-                //}
+                 
 
                 if (!string.IsNullOrEmpty(searchValue))
                 {

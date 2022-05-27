@@ -1,0 +1,38 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@Html.AntiForgeryToken()
+
+
+
+
+<div class="row" style="margin-top: 25px; background: white; ">
+
+    <div class="col-12">
+
+        @{
+        Html.RenderPartial("~/Views/Shared/_GameStatisticPieChartPartial.cshtml");
+        }
+
+    </div>
+</div>
+ 
+
+
+<div class="row" style="background: white; ">
+
+
+    <div class="col-12">
+
+        @{
+        Html.RenderPartial("~/Views/Shared/_PerformanceLineChartPartial.cshtml");
+        }
+
+
+    </div>
+</div>
+
+
