@@ -13,6 +13,10 @@ using System.Threading.Tasks;
 
 namespace Chess.Web.Controllers
 {
+    using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.Mvc;
+
+    [Authorize]
     public class GameHistoryController : BaseController
     {
         private readonly UserManager<ChessUser> userManager;
@@ -66,17 +70,36 @@ namespace Chess.Web.Controllers
                                             };
 
 
-                var chessGameQuery = (from game in dbContext.ChessGames.AsEnumerable()
+                var chessGameQuery = from game in dbContext.ChessGames.AsEnumerable()
                                       join chessGamePlayers in chessGamePlayersQuery on game.Id equals chessGamePlayers.Key
                                       select new
                                       {
                                           Game = game,
-                                          Players = chessGamePlayers.Players
-                                      });
+                                          Players = chessGamePlayers.Players,
+                                      };
 
 
 
 
+                if (!(string.IsNullOrEmpty(sortColumn) && string.IsNullOrEmpty(sortColumnDirection)))
+                {
+                    switch (sortColumn)
+                    {
+                        case "CreatedOn":
+                            if (sortColumnDirection.ToLower() == "asc")
+                            {
+                                chessGameQuery = chessGameQuery.OrderBy(g => g.Game.CreatedOn);
+                            }
+                            else
+                            {
+                                chessGameQuery = chessGameQuery.OrderByDescending(g => g.Game.CreatedOn);
+                            }
+                            break;
+                        default:
+                            chessGameQuery = chessGameQuery.OrderByDescending(g => g.Game.CreatedOn);
+                            break;
+                    }
+                }
 
 
                 IEnumerable<GameHistoryViewModel> finalQuery = chessGameQuery.Select(c => new GameHistoryViewModel()
@@ -93,36 +116,12 @@ namespace Chess.Web.Controllers
                     OpponentColor = c.Players.FirstOrDefault(c => c.UserId != userId).Color,
                     OpponentScore = c.Players.FirstOrDefault(c => c.UserId != userId).Score,
                 });
-
-
-
-
-
-                if (!(string.IsNullOrEmpty(sortColumn) && string.IsNullOrEmpty(sortColumnDirection)))
-                {
-                    switch (sortColumn)
-                    {
-                        case "CreatedOn":
-                            if (sortColumnDirection.ToLower() == "asc")
-                            {
-                                finalQuery = finalQuery.OrderBy(g => g.CreatedOn);
-                            }
-                            else
-                            {
-                                finalQuery = finalQuery.OrderByDescending(g => g.CreatedOn);
-                            }
-                            break;
-                        default:
-                            finalQuery = finalQuery.OrderByDescending(g => g.CreatedOn);
-                            break;
-                    }
-                }
                  
 
                 if (!string.IsNullOrEmpty(searchValue))
                 {
-                    finalQuery = finalQuery.Where(m => m.YourNickName.Contains(searchValue)
-                                                || m.OpponentNickName.Contains(searchValue));
+                    finalQuery = finalQuery.Where(m => m.YourNickName.ToLower().Contains(searchValue.ToLower())
+                                                || m.OpponentNickName.ToLower().Contains(searchValue.ToLower()));
                 }
 
 

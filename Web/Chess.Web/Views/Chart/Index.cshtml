@@ -3,6 +3,10 @@
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<script src="~/lib/canvas-js/canvas.js"></script>
+@*<script type="text/javascript" src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>*@
+@*<script src="~/lib/canvasjs/canvasjs.min.js"></script>*@
+
 
 @Html.AntiForgeryToken()
 
@@ -14,12 +18,12 @@
     <div class="col-12">
 
         @{
-        Html.RenderPartial("~/Views/Shared/_GameStatisticPieChartPartial.cshtml");
+            Html.RenderPartial("~/Views/Shared/_GameStatisticPieChartPartial.cshtml");
         }
 
     </div>
 </div>
- 
+
 
 
 <div class="row" style="background: white; ">
@@ -28,11 +32,10 @@
     <div class="col-12">
 
         @{
-        Html.RenderPartial("~/Views/Shared/_PerformanceLineChartPartial.cshtml");
+            Html.RenderPartial("~/Views/Shared/_GameStatisticBarChartPartial.cshtml");
         }
 
 
     </div>
 </div>
-
 

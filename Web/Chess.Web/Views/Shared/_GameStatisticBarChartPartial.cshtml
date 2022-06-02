@@ -1,0 +1,83 @@
+﻿
+
+
+
+
+
+
+<div id="chartBarContainer" style="height: 300px; width: 100%;"></div>
+
+
+<script type="text/javascript">
+
+
+    $(document).ready(function () {
+
+        $.ajax({
+
+            // Our sample url to make request
+            url:
+                '/Chart/GetGameQualityDataForBarChart',
+
+            // Type of Request
+            type: "POST",
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader("XSRF-TOKEN",
+                    $('input:hidden[name="__RequestVerificationToken"]').val());
+            },
+            "datatype": "json",
+            // Function to call when to
+            // request is ok
+            success: function (data) {
+                loadBarChart(data);
+            },
+
+            // Error handling
+            error: function (error) {
+                console.log(`Error ${error}`);
+            }
+        });
+
+
+    });
+
+    function loadBarChart(chartData) {
+        if (chartData !== null && chartData !== undefined && chartData.length > 0) {
+
+
+            var chart = new CanvasJS.Chart("chartBarContainer", {
+                animationEnabled: true,
+                theme: "light2", // "light1", "light2", "dark1", "dark2"
+                showInLegend: true,
+                legendMarkerColor: "grey",
+                legendText: "Game - Date",
+                title: {
+                    text: "Quality Percentage"
+                },
+                axisY: {
+                    title: "Quality (%)"
+                },
+                toolTip: {
+                    contentFormatter: function (e) {
+                        return e.entries[0].dataPoint.extensiondata + "<br/>Quality:" + e.entries[0].dataPoint.y + " %";   
+                    }
+                },
+                data: [{
+                    type: "column",
+                    showInLegend: true,
+                    click: onClickBar,
+                    dataPoints: chartData
+                }]
+            });
+            chart.render();
+
+
+        }
+    }
+
+    function onClickBar(e) {
+        window.open('/GameHistory/Detail?gameId=' + e.dataPoint.id, "_blank");
+    }
+
+
+</script>

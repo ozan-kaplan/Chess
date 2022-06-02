@@ -10,7 +10,6 @@
         "dist/jquery.js"
       ]
     },
-
     {
       "library": "jquery-validation@1.19.1",
       "destination": "wwwroot/lib/jquery-validation/",
@@ -53,8 +52,15 @@
     },
     {
       "provider": "cdnjs",
-      "library": "bootstrap@5.1.3",
-      "destination": "wwwroot/lib/bootstrap/"
+      "library": "canvasjs@1.7.0",
+      "destination": "wwwroot/lib/canvasjs/",
+      "files": [
+        "canvasjs.min.js",
+        "canvasjs.js",
+        "excanvas.js",
+        "jquery.canvasjs.js",
+        "jquery.canvasjs.min.js"
+      ]
     }
   ]
 }
